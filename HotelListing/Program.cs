@@ -1,4 +1,8 @@
+using HotelListing.Data;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
+using HotelListing.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +23,10 @@ builder.Services.AddCors(O=>
     .AllowAnyHeader());
 
 });
+builder.Services.AddAutoMapper(typeof(MapperInitializer));
+
+builder.Services.AddDbContext<DatabaseContext>(o =>
+o.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection")));
 
 var app = builder.Build();
 
